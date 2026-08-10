@@ -1,0 +1,21 @@
+set +e
+set -x
+echo "You're running an nsh image."
+mount -t romfs /dev/res /resource
+mount -t yaffs /dev/usrdata /data
+set errcode $?
+if [ $errcode -ne 0 ]
+then
+  echo "/dev/usrdata mount failed, errcode is" $errcode
+fi
+set resetcause `resetcause`
+echo $resetcause
+if [ "$resetcause" == "cpu_soft_reset(restore)" ]
+then
+  echo "recovery reset system"
+  sh /etc/factory.sh
+  echo "reboot system now"
+  reboot
+fi
+echo "Boot nsh ok"
+openvela_ui &

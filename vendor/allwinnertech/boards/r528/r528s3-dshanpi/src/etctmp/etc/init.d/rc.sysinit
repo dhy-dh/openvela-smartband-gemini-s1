@@ -1,0 +1,4 @@
+set +e
+setlogmask disable default
+mount -t tmpfs /tmp
+set TZ Asia/Shanghai
